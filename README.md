@@ -1,4 +1,4 @@
-该javaweb代码为一个联网记事本的后端代码，其中除团队部分外的其他功能都实现了<br>
+该javaweb代码为一个联网记事本的后端代码，其中除团队外的大部分功能都实现了<br>
 代码符合预备要求，分别使用 springboot, mybatis, mysql, jwt, 三层架构和驼峰命名法等常见规范，apifox<br>
 以下为部分apifox截图<br>
 求通过qwq<br>
