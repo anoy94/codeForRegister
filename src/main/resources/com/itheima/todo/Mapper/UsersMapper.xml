@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.todo.Mapper.UsersMapper">
+    <select id="login" resultType="Integer">
+        select count(*) from user where account = #{account} and pwd = #{pwd}
+    </select>
+    <select id="selectByuser" resultType="com.itheima.todo.pojo.User">
+        select * from user where account = #{account} and pwd = #{pwd}
+    </select>
+    <select id="register" resultType="Integer">
+        select count(*) from user where account = #{account}
+    </select>
+    <insert id="insert">
+        insert into user (account, pwd,basicInfo,`groups`,permission) values (#{account},#{pwd},#{basicInfo},#{groups},'{"role":"User"}');
+    </insert>
+
+</mapper>

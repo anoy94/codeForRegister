@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itheima.todo.Mapper.TodosMapper">
+    <select id="select" resultType="com.itheima.todo.pojo.todospojo.TodosJson">
+        select * from persontodos where account = #{account} order by case type when 'unexpired' then 1
+                                                             when 'expired' then 2
+                                                             else 4
+                                                             end
+    </select>
+    <select id="selectall" resultType="com.itheima.todo.pojo.todospojo.TodosJson">
+        select * from persontodos where account = #{account}
+    </select>
+    <update id="update">
+        update persontodos set title= #{title}, content=#{content},brief=#{brief},status=#{status},type=#{type},tags=#{tags},repeatOption=#{repeatOption},resetOption=#{resetOption},notificationOption=#{notificationOption} where id=#{id} and account=#{account}
+
+    </update>
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into persontodos (account,title,content,brief,status,type,tags,repeatOption,resetOption,origin,notificationOption) values (#{account},#{title},#{content},#{brief},#{status},#{type},#{tags},#{repeatOption},#{resetOption},#{origin},#{notificationOption})
+
+    </insert>
+    <delete id="delete">
+        delete from persontodos where id=#{id} and account=#{account}
+    </delete>
+    <select id="selectOne" resultType="com.itheima.todo.pojo.todospojo.TodosJson">
+        select * from persontodos where id=#{id} and account=#{account}
+    </select>
+
+</mapper>
