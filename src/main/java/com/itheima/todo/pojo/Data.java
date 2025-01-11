@@ -1,9 +1,7 @@
 package com.itheima.todo.pojo;
 
-import lombok.Data;
-
-@Data
-public class data {
+@lombok.Data
+public class Data {
     String token;
     BasicInfo basicInfo;
 }

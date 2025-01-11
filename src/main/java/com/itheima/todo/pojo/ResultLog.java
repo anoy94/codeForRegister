@@ -1,10 +1,8 @@
 package com.itheima.todo.pojo;
 
-import lombok.Data;
-
-@Data
-public class resultLog {
+@lombok.Data
+public class ResultLog {
     Integer code;
     String status;
-    data data;
+    Data data;
 }

@@ -3,10 +3,10 @@ package com.itheima.todo.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itheima.todo.Mapper.UsersMapper;
+import com.itheima.todo.mapper.UserMapper;
 import com.itheima.todo.pojo.*;
-import com.itheima.todo.service.JwtsService;
-import com.itheima.todo.service.UsersService;
+import com.itheima.todo.service.JwtService;
+import com.itheima.todo.service.UserService;
 import com.itheima.todo.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,26 +16,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-public class UsersServiceImpl implements UsersService {
+public class UserServiceImpl implements UserService {
     @Autowired
-    private UsersMapper usersMapper;
+    private UserMapper userMapper;
     @Autowired
-    private JwtsService jwtsService;
+    private JwtService jwtService;
     private static final ObjectMapper objectMapper = new ObjectMapper();
     static{
         objectMapper.findAndRegisterModules();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,false);
     }
     @Override
-    public resultReg register(String account, String pwd, BasicInfo basicInfo) throws JsonProcessingException {
+    public ResultReg register(String account, String pwd, BasicInfo basicInfo) throws JsonProcessingException {
 
         User users=new User();
         users.setAccount(account);
         users.setPwd(pwd);
         String basicInfoJson= objectMapper.writeValueAsString(basicInfo);
         users.setBasicInfo(basicInfoJson);
-        Integer num=usersMapper.register(users);
-        resultReg reg = new resultReg();
+        Integer num= userMapper.register(users);
+        ResultReg reg = new ResultReg();
         reg.setCode(201);
         reg.setStatus("fail");
         if(num==1){
@@ -43,33 +43,33 @@ public class UsersServiceImpl implements UsersService {
         }
         Object[] B = new Object[0];
         users.setGroups(objectMapper.writeValueAsString(B));
-        usersMapper.insert(users);
+        userMapper.insert(users);
         reg.setCode(200);
         reg.setStatus("success");
         return reg;
     }
     @Override
-    public resultLog login(String account, String pwd) throws JsonProcessingException {
-        resultLog logi=new resultLog();
+    public ResultLog login(String account, String pwd) throws JsonProcessingException {
+        ResultLog logi=new ResultLog();
         logi.setCode(201);
         logi.setStatus("用户名或密码错误");
         User users=new User();
         users.setAccount(account);
         users.setPwd(pwd);
-        Integer num=usersMapper.login(users);
+        Integer num= userMapper.login(users);
         if(num==0){
             return logi;
         }
-        User back=usersMapper.selectByuser(users);
+        User back= userMapper.selectByuser(users);
         Map<String,Object> claims= new HashMap<>();
         claims.put("account",account);
         claims.put("iat", new Date().getTime() / 1000);
         String jwt= JwtUtils.generateJwt(claims);
-        tokenCheck tokencheck=new tokenCheck();
+        TokenCheck tokencheck=new TokenCheck();
         tokencheck.setAccount(account);
         tokencheck.setToken(jwt);
-        jwtsService.tokenadd(tokencheck);
-        data dataLog = new data();
+        jwtService.tokenadd(tokencheck);
+        Data dataLog = new Data();
         dataLog.setToken(jwt);
         logi.setCode(200);
         logi.setStatus("success");
@@ -79,15 +79,15 @@ public class UsersServiceImpl implements UsersService {
         return logi;
     }
     @Override
-    public resultLogout logout(String token){
-        resultLogout re_Logout = new resultLogout();
+    public ResultLogout logout(String token){
+        ResultLogout re_Logout = new ResultLogout();
         re_Logout.setCode(255);
         re_Logout.setStatus("fail");
-        tokenCheck tokencheck=new tokenCheck();
+        TokenCheck tokencheck=new TokenCheck();
         tokencheck.setToken(token);
-        Integer num=jwtsService.tokensel(tokencheck);
+        Integer num= jwtService.tokensel(tokencheck);
         if (num==1){
-            jwtsService.tokendel(tokencheck);
+            jwtService.tokendel(tokencheck);
             re_Logout.setCode(200);
             re_Logout.setStatus("success");
             return re_Logout;

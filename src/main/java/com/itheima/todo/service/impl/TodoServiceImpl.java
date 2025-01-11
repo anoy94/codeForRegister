@@ -3,24 +3,24 @@ package com.itheima.todo.service.impl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.itheima.todo.Mapper.TodosMapper;
+import com.itheima.todo.mapper.TodoMapper;
 import com.itheima.todo.pojo.todospojo.*;
-import com.itheima.todo.service.TodosService;
+import com.itheima.todo.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 
-public class TodosServiceImpl implements TodosService {
+public class TodoServiceImpl implements TodoService {
     @Autowired
-    private TodosMapper todosMapper;
+    private TodoMapper todoMapper;
 
     @Override
     public todosGet gettodos(String account, Integer page, Integer pageNum, Filter filter) throws JsonProcessingException {
         todosGet todosget=new todosGet();
         if(filter.getEnable()){
             TodosDataJson todosDataJson=new TodosDataJson();
-            todosDataJson.setTodosjson(todosMapper.select(account, page, pageNum).toArray(new TodosJson[0]));
+            todosDataJson.setTodosjson(todoMapper.select(account, page, pageNum).toArray(new TodosJson[0]));
 
             ObjectMapper objectMapper=new ObjectMapper();
             TodosData todosData= new TodosData();
@@ -46,7 +46,7 @@ public class TodosServiceImpl implements TodosService {
         }
         else {
             TodosDataJson todosDataJson = new TodosDataJson();
-            todosDataJson.setTodosjson(todosMapper.selectall(account).toArray(new TodosJson[0]));
+            todosDataJson.setTodosjson(todoMapper.selectall(account).toArray(new TodosJson[0]));
 
             ObjectMapper objectMapper=new ObjectMapper();
             TodosData todosData= new TodosData();
@@ -77,7 +77,7 @@ public class TodosServiceImpl implements TodosService {
     @Override
     public UpdateTodosResult updatetodos(String account, Integer id, updater updater) throws JsonProcessingException {
         ObjectMapper objectMapper=new ObjectMapper();
-        todosMapper.update(account, id,updater.getTitle(),updater.getContent(),updater.getBrief(),updater.getStatus(),updater.getType(),objectMapper.writeValueAsString(updater.getTags()) ,objectMapper.writeValueAsString(updater.getRepeatOption()) ,objectMapper.writeValueAsString(updater.getResetOption()) ,objectMapper.writeValueAsString(updater.getNotificationOption()) );
+        todoMapper.update(account, id,updater.getTitle(),updater.getContent(),updater.getBrief(),updater.getStatus(),updater.getType(),objectMapper.writeValueAsString(updater.getTags()) ,objectMapper.writeValueAsString(updater.getRepeatOption()) ,objectMapper.writeValueAsString(updater.getResetOption()) ,objectMapper.writeValueAsString(updater.getNotificationOption()) );
         UpdateTodosResult updateTodosResult =new UpdateTodosResult();
         updateTodosResult.setCode(200);
         updateTodosResult.setStatus("success");
@@ -100,7 +100,7 @@ public class TodosServiceImpl implements TodosService {
         mapRequestForAdd.setResetOption(objectMapper.writeValueAsString(todo.getResetOption()));
         mapRequestForAdd.setOrigin(objectMapper.writeValueAsString(todo.getOrigin()));
         mapRequestForAdd.setNotificationOption(objectMapper.writeValueAsString(todo.getNotificationOption()));
-        todosMapper.add(mapRequestForAdd);
+        todoMapper.add(mapRequestForAdd);
         AddTodosResult addTodosResult=new AddTodosResult();
         addTodosResult.setCode(200);
         addTodosResult.setStatus("success");
@@ -114,7 +114,7 @@ public class TodosServiceImpl implements TodosService {
         MapRequestForDelete mapRequestForDelete=new MapRequestForDelete();
         mapRequestForDelete.setAccount(account);
         mapRequestForDelete.setId(id);
-        todosMapper.delete(mapRequestForDelete);
+        todoMapper.delete(mapRequestForDelete);
         deleteTodoResult.setStatus("success");
         deleteTodoResult.setCode(200);
         return deleteTodoResult;
@@ -124,7 +124,7 @@ public class TodosServiceImpl implements TodosService {
     public todoGet gettodo(Integer id, String account) throws JsonProcessingException {
         ObjectMapper objectMapper=new ObjectMapper();
         todoGet todoGet=new todoGet();
-        TodosJson todosJson=todosMapper.selectOne(id, account);
+        TodosJson todosJson= todoMapper.selectOne(id, account);
         todos todosfordata = new todos();
         todosfordata.setId(todosJson.getId());
         todosfordata.setTitle(todosJson.getTitle());

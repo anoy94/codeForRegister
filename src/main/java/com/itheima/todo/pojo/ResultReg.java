@@ -3,7 +3,8 @@ package com.itheima.todo.pojo;
 import lombok.Data;
 
 @Data
-public class resultLogout {
+public class ResultReg {
     Integer code;
     String status;
+
 }

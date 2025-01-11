@@ -3,8 +3,6 @@ package com.itheima.todo.pojo;
 import lombok.Data;
 
 @Data
-public class tokenCheck {
-    String account;
+public class LogoutRequest {
     String token;
-
 }

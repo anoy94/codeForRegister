@@ -1,4 +1,4 @@
-package com.itheima.todo.Mapper;
+package com.itheima.todo.mapper;
 
 import com.itheima.todo.pojo.todospojo.MapRequestForAdd;
 import com.itheima.todo.pojo.todospojo.MapRequestForDelete;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper
 
-public interface TodosMapper {
+public interface TodoMapper {
     List<TodosJson> select(String account, Integer page, Integer pageNum);
     List<TodosJson> selectall(String account);
     void update(@Param("account") String account,@Param("id") Integer id,@Param("title") String title,@Param("content") String content,@Param("brief") String brief,@Param("status") String status,@Param("type") String type,@Param("tags") String tags,@Param("repeatOption") String repeatOption,@Param("resetOption") String resetOption,@Param("notificationOption") String notificationOption);

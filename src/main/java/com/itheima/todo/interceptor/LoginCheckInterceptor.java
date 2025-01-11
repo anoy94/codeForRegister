@@ -1,14 +1,11 @@
 package com.itheima.todo.interceptor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.itheima.todo.pojo.Results;
-import com.itheima.todo.pojo.tokenCheck;
-import com.itheima.todo.service.JwtsService;
+import com.itheima.todo.pojo.TokenCheck;
+import com.itheima.todo.service.JwtService;
 import com.itheima.todo.utils.JwtUtils;
-import jdk.nashorn.internal.runtime.JSONFunctions;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.Jar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -21,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class LoginCheckInterceptor implements HandlerInterceptor {
     @Autowired
-    private JwtsService jwtsService;
+    private JwtService jwtService;
     private static final ObjectMapper objectMapper = new ObjectMapper();
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -48,9 +45,9 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             response.getWriter().write(notlogin);
             return false;
         }
-        tokenCheck tok = new tokenCheck();
+        TokenCheck tok = new TokenCheck();
         tok.setAccount(JwtUtils.parseJWT(jwt).get("account", String.class));
-        if(jwtsService.tokensel(tok)==1){
+        if(jwtService.tokensel(tok)==1){
             log.info("令牌合法");
             return true;}
         log.info("令牌错误");

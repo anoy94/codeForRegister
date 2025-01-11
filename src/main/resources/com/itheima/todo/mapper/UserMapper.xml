@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.itheima.todo.Mapper.UsersMapper">
+<mapper namespace="com.itheima.todo.mapper.UserMapper">
     <select id="login" resultType="Integer">
         select count(*) from user where account = #{account} and pwd = #{pwd}
     </select>
