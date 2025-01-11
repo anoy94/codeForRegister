@@ -1,3 +1,4 @@
+(我已更改了我的代码，使其更符合阿里巴巴命名规范)<br>
 该javaweb代码为一个联网记事本的后端代码，其中除团队外的功能都实现了<br>
 代码符合预备要求，分别使用 springboot, mybatis, mysql, jwt, 三层架构和驼峰命名法等常见规范，apifox<br>
 以下为apifox部分接口截图<br>
